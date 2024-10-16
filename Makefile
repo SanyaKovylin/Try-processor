@@ -11,7 +11,7 @@ Objects = $(patsubst $(Source)/%.cpp,$(Build)/%.o,$(Sources))
 StackObjects = $(patsubst $(HellSource)/%.cpp, $(HellBuild)/%.o, $(StackSources))
 
 SourcesAss = $(wildcard $(SourceAss)/*.cpp)
-ObjectsAss = $(patsubst $(SourceAss)/%.cpp,$(Build)/%.o,$(SourcesAss))
+ObjectsAss = $(patsubst $(SourceAss)/%.cpp,$(Build)/%ass.o,$(SourcesAss))
 
 Cpp = $(wildcard *.cpp)
 H = $(wildcard *.h)
@@ -33,7 +33,7 @@ $(HellBuild)/%.o : $(HellSource)/%.cpp | $(HellBuild)
 $(Build)/%.o : $(Source)/%.cpp | $(Build)
 	$(CC) $(COMP_FLAGS) $< -c -o $@
 
-$(Build)/%.o : $(SourceAss)/%.cpp | $(Build)
+$(Build)/%ass.o : $(SourceAss)/%.cpp | $(Build)
 	$(CC) $(COMP_FLAGS) $< -c -o $@
 
 $(Build)/$(Exe): $(Objects) $(StackObjects)| $(Build)

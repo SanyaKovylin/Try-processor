@@ -13,6 +13,7 @@ FILE *f = fopen("Buf.log","r");
 
 err_t ParseOneLine(char *buf, size_t *rd, size_t *wrt);
 err_t FuncFinder(char *word, char *cmd);
+int check_for_reg(char* buf, size_t rdr);
 
 size_t BaseRead (const char *src, char **Buffer) {
 
@@ -42,7 +43,7 @@ err_t Parser (char **buffer, size_t *len){
 
     char *buf = *(buffer);
 
-    valtype *cmds = (valtype*) calloc (MaxCommands, sizeof(valtype));
+    vtype *cmds = (vtype*) calloc (MaxCommands, sizeof(vtype));
     assert (cmds != NULL);
 
     size_t writer = 1;
@@ -68,7 +69,6 @@ err_t ParseOneLine(char *buf, size_t *rd, size_t *wrt){
     char *word = (char *) calloc (MaxCmdSize, sizeof(char));
     size_t wordptr = 0;
 
-
     size_t reader = *rd;
     size_t writer = *wrt;
 
@@ -83,6 +83,7 @@ err_t ParseOneLine(char *buf, size_t *rd, size_t *wrt){
     if (*(word)) {
         char cmd = NON_CMD;
         RIZE(FuncFinder(word, &cmd));
+        if (cmd - 48 == CMD_PUSH && check_for_reg(buf, reader)) cmd = (char) (CMD_PUSHR + 48);
         buf[writer++] = cmd;
     }
 
@@ -103,8 +104,6 @@ err_t ParseOneLine(char *buf, size_t *rd, size_t *wrt){
     *(rd) = reader;
     *(wrt) = writer;
 
-
-
     return CAT_CONDITION;
 }
 
@@ -115,12 +114,15 @@ err_t FuncFinder(char *word, char *cmd){
     for (int i = 0; i < ncmds; i++){
 
        if (!stricmp(word, FindFunc[i].cmdname)){
-           *(cmd) = (char) FindFunc[i].command + 48;
+
+           *(cmd) = (FindFunc[i].command + 48);
            wasword = true;
+           break;
         }
+        printf("%s\n", FindFunc[i].cmdname);
     }
 
-    if (!wasword) return COMANDA_KRINGE;
+    if (!wasword) {printf("%s", word); return COMANDA_KRINGE;}
 
     return CAT_CONDITION;
 }
@@ -132,4 +134,10 @@ const char *SkipCmd(const char* CmdName){
 
 void SetCastFunc(int (*castfunc) (char *str, vtype *val)){
     castfromstr = castfunc;
+}
+
+int check_for_reg(char* buf, size_t rdr){
+
+    while (buf[rdr] == ' ') rdr++;
+    return isalpha(buf[rdr]);
 }

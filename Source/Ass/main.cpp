@@ -7,13 +7,14 @@ void print_int(FILE *fw, void* elem);
 const char *src = "Source/cmds.txt";
 const char *dst = "Source/SPU.asm";
 
-int fromstrtoint(char *ctr, valtype *val);
+int fromstrtoint(char *ctr, int *val);
+int fromstrtod(char *str, vtype *val);
 
 int main(void){
 
     char *buffer = NULL;
     size_t lenbuf = BaseRead (src, &buffer);
-    SetCastFunc(fromstrtoint);
+    SetCastFunc(fromstrtod);
 
     RIZE(Parser(&buffer, &lenbuf));
 
@@ -22,8 +23,14 @@ int main(void){
     printf("!!!%s\n", buffer + 1);
 
     fputs(buffer + 1, fdst);
+
+    return 0;
 }
 
-int fromstrtoint(char *str, valtype *val){
+int fromstrtoint(char *str, int *val){
     return sscanf(str, "%d", val);
+}
+
+int fromstrtod(char *str, double *val){
+    return ((*(val) = strtod(str, NULL))> 0);
 }

@@ -33,9 +33,11 @@ typedef enum Commands {
     CMD_JNE  = 19,
     CMD_CALL = 20,
     CMD_RET  = 21,
+    CMD_PUSHR= 22,
+    CMD_POP  = 23,
 } cmd_t;
 
-const int ncmds = 10;
+const int ncmds = 23;
 
 typedef enum CompilerErrors {
     CAT_CONDITION         = 0, //MEOW !!! MURRRRRRRRR !!!
@@ -44,31 +46,11 @@ typedef enum CompilerErrors {
     YOUR_READER_ERROR     = 3,
     NE_PODELISH_NA_NICHTO = 4,
     COMANDA_KRINGE        = 5,
+    SAM_PRIDUMAL_REG_TAKOY= 6,
 } err_t;
-
-typedef struct Conditions {
-    Stack *Buffer;
-    char *Ips;
-    size_t ip;
-    size_t ptr;
-    int (*decodefunc) (char *LineWithValue, vtype *elem);
-    bool tocontinue;
-    size_t ipm;
-} cond_t;
-
-struct CmdNum {
-    cmd_t command;
-    err_t (*cmdfunc)(cond_t *MainConditions);
-};
 
 const int MaxCmdSize     =  8;
 const int LenOfCmdPhrase =  4;
 const int MaxCommands    = 30;
-
-// struct CmdVals {
-//     typeмфд
-//
-// };
-
 
 #endif //CMD_H_INCLUDED

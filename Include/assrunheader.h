@@ -10,5 +10,5 @@ err_t Parser (char **buffer, size_t *len);
 
 #define RIZE(func) if (err_t c = func) return c;
 
-void SetCastFunc(int (*castfunc) (char *str, valtype *val));
+void SetCastFunc(int (*castfunc) (char *str, vtype *val));
 #endif //ASSRUNHEADER_H_INCLUDED

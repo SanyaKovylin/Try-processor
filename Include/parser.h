@@ -26,9 +26,20 @@ struct CmdName FindFunc[] {
     COMD(CMD_SQRT),
     COMD(CMD_SIN),
     COMD(CMD_COS),
+    COMD(CMD_JMP),
+    COMD(CMD_JA),
+    COMD(CMD_JAE),
+    COMD(CMD_JB),
+    COMD(CMD_JBE),
+    COMD(CMD_JE),
+    COMD(CMD_JNE),
+    COMD(CMD_CALL),
+    COMD(CMD_RET),
+    COMD(CMD_PUSHR),
+    COMD(CMD_POP),
 };
 
-int (*castfromstr) (char *str, valtype* val) = NULL;
+int (*castfromstr) (char *str, vtype* val) = NULL;
 
 
 

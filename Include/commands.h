@@ -5,6 +5,36 @@
 
 vtype DefaultTypeValue = 0;
 
+typedef struct Registr {
+    const char *name;
+    vtype value;
+} rgtr_t;
+
+rgtr_t RegArray[]  = {
+    {"ax" , 0},
+    {"bx" , 0},
+    {"cx" , 0},
+    {"dx" , 0},
+};
+
+const size_t RegLen = sizeof("ax");
+const int nreg = 4;
+
+typedef struct Conditions {
+    Stack *Buffer;
+    rgtr_t *Regs;
+    char *Ips;
+    size_t ip;
+    int (*decodefunc) (char *LineWithValue, vtype *elem);
+    bool tocontinue;
+    size_t ipm;
+} cond_t;
+
+struct CmdNum {
+    cmd_t command;
+    err_t (*cmdfunc)(cond_t *MainConditions);
+};
+
 static err_t func_push(cond_t *maincons);
 static err_t func_out (cond_t *maincons);
 static err_t func_in  (cond_t *maincons);
@@ -15,20 +45,44 @@ static err_t func_sub (cond_t *maincons);
 static err_t func_mul (cond_t *maincons);
 static err_t func_div (cond_t *maincons);
 static err_t func_sqrt(cond_t *maincons);
+static err_t func_sin (cond_t *maincons);
+static err_t func_cos (cond_t *maincons);
+static err_t func_jmp (cond_t *maincons);
+static err_t func_ja  (cond_t *maincons);
+static err_t func_jae (cond_t *maincons);
+static err_t func_jb  (cond_t *maincons);
+static err_t func_jbe (cond_t *maincons);
+static err_t func_je  (cond_t *maincons);
+static err_t func_jne (cond_t *maincons);
+static err_t func_call(cond_t *maincons);
+static err_t func_ret (cond_t *maincons);
+static err_t func_pushr(cond_t *maincons);
+static err_t func_pop (cond_t *maincons);
 
 struct CmdNum GetFunc[] {
-    CMD_PUSH, func_push,
-    CMD_OUT , func_out ,
-    CMD_IN  , func_in  ,
-    CMD_DUMP, func_dump,
-    CMD_HLT , func_halt,
-    CMD_ADD , func_add ,
-    CMD_SUB , func_sub ,
-    CMD_MUL , func_mul ,
-    CMD_DIV , func_div ,
-    CMD_SQRT, func_sqrt,
-    // CMD_SIN ,
-    // CMD_COS ,
+    CMD_PUSH , func_push,
+    CMD_OUT  , func_out ,
+    CMD_IN   , func_in  ,
+    CMD_DUMP , func_dump,
+    CMD_HLT  , func_halt,
+    CMD_ADD  , func_add ,
+    CMD_SUB  , func_sub ,
+    CMD_MUL  , func_mul ,
+    CMD_DIV  , func_div ,
+    CMD_SQRT , func_sqrt,
+    CMD_SIN  , func_sin,
+    CMD_COS  , func_cos,
+    CMD_JMP  , func_jmp,
+    CMD_JA   , func_ja,
+    CMD_JAE  , func_jae,
+    CMD_JB   , func_jb,
+    CMD_JBE  , func_jbe,
+    CMD_JE   , func_je,
+    CMD_JNE  , func_jne,
+    CMD_CALL , func_call,
+    CMD_RET  , func_ret,
+    CMD_PUSHR, func_pushr,
+    CMD_POP  , func_pop,
 };
 
 void print_int(FILE *fw, void* elem);
