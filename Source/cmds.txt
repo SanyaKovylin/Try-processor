@@ -1,0 +1,11 @@
+push 5
+push 3
+mul
+push 6
+add
+push 7
+div
+in
+sub
+out
+hlt
