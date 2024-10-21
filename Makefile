@@ -48,7 +48,7 @@ $(Build):
 $(HellBuild):
 	mkdir -p $(HellBuild)
 
-
+comb: all ass runass run
 
 cleanup:
 ifdef Cpp

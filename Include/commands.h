@@ -5,28 +5,25 @@
 
 vtype DefaultTypeValue = 0;
 
-typedef struct Registr {
-    const char *name;
-    vtype value;
-} rgtr_t;
-
-rgtr_t RegArray[]  = {
-    {"ax" , 0},
-    {"bx" , 0},
-    {"cx" , 0},
-    {"dx" , 0},
-};
-
 const size_t RegLen = sizeof("ax");
 const int nreg = 4;
 
+struct Cell {
+    char el;
+    char r;
+    char g;
+    char b;
+};
+
 typedef struct Conditions {
     Stack *Buffer;
-    rgtr_t *Regs;
+    Stack *Calls;
+    vtype *Regs;
     char *Ips;
     size_t ip;
     int (*decodefunc) (char *LineWithValue, vtype *elem);
     bool tocontinue;
+    com_t cmd;
     size_t ipm;
 } cond_t;
 
@@ -56,10 +53,9 @@ static err_t func_je  (cond_t *maincons);
 static err_t func_jne (cond_t *maincons);
 static err_t func_call(cond_t *maincons);
 static err_t func_ret (cond_t *maincons);
-static err_t func_pushr(cond_t *maincons);
 static err_t func_pop (cond_t *maincons);
 
-struct CmdNum GetFunc[] {
+struct CmdNum GetFunc[] { // awaitsReg // RequiuresReg
     CMD_PUSH , func_push,
     CMD_OUT  , func_out ,
     CMD_IN   , func_in  ,
@@ -81,7 +77,6 @@ struct CmdNum GetFunc[] {
     CMD_JNE  , func_jne,
     CMD_CALL , func_call,
     CMD_RET  , func_ret,
-    CMD_PUSHR, func_pushr,
     CMD_POP  , func_pop,
 };
 
@@ -90,7 +85,7 @@ void print_int(FILE *fw, void* elem);
 int (*castfromstr) (char *str, vtype* val) = NULL;
 
 #ifndef NPRINT
-    #define FUNC_PRINT(value) printf("%s value = %g\n", __func__, value);
+    #define FUNC_PRINT(value) printf("%s value = %d\n", __func__, value);
 #else
     #define FUNC_PRINT(value) ;
 #endif

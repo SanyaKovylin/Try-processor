@@ -21,6 +21,10 @@ void print_int(FILE *fw, void* elem) {
     fprintf(fw,"%d", *((int*) elem));
 }
 
+void print_d(FILE *fw, void* elem) {
+    fprintf(fw,"%g", *((double*) elem));
+}
+
 int fromstrtod(char *str, vtype *val){
     return ((*(val) = strtod(str, NULL))> 0);
 }

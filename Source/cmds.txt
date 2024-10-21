@@ -1,14 +1,19 @@
-push 10
-push 100
 push 5
 push 3
 mul
 push 6
-add
+pop ax
+push ax
+call func
+jmp next
+push 3
+next:
 push 7
 div
-jb 10
 in
 sub
 out
 hlt
+func:
+add
+ret

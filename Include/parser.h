@@ -8,12 +8,11 @@ struct CmdName {
     const char *cmdname;
 };
 
-
 const char *SkipCmd(const char* CmdName);
 
 #define COMD(name) {name, SkipCmd(#name)}
 
-struct CmdName FindFunc[] {
+const struct CmdName FindFunc[] {
     COMD(CMD_PUSH),
     COMD(CMD_OUT),
     COMD(CMD_IN),
@@ -39,8 +38,21 @@ struct CmdName FindFunc[] {
     COMD(CMD_POP),
 };
 
+#undef COMD
+
 int (*castfromstr) (char *str, vtype* val) = NULL;
 
+typedef struct Mark {
+    char *name;
+    size_t ptr;
+} mark_t;
 
+typedef struct Mk {
+    mark_t *marks;
+    size_t size;
+    size_t ptr;
+} mk_t;
+
+const int nmarks = 8;
 
 #endif

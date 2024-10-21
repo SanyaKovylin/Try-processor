@@ -16,14 +16,11 @@ int main(void){
     size_t lenbuf = BaseRead (src, &buffer);
     SetCastFunc(fromstrtod);
 
-    RIZE(Parser(&buffer, &lenbuf));
+    RIZE(NParser(&buffer, &lenbuf));
+    RIZE(NParser(&buffer, &lenbuf));
 
-    FILE* fdst = fopen(dst, "w");
-
-    printf("!!!%s\n", buffer + 1);
-
-    fputs(buffer + 1, fdst);
-
+    FILE* fdst = fopen(dst, "wb");
+    fwrite(buffer, sizeof(char), lenbuf, fdst);
     return 0;
 }
 

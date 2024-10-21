@@ -7,6 +7,7 @@
 
 size_t BaseRead (const char *src, char **Buffer);
 err_t Parser (char **buffer, size_t *len);
+err_t NParser (char **buffer, size_t *len);
 
 #define RIZE(func) if (err_t c = func) return c;
 

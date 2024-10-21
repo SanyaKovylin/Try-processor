@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <ctype.h>
+#include <stdint.h>
 #include <sys/stat.h>
 
 #include "commands.h"
@@ -22,6 +23,8 @@ int to_d(char *val, double *elem);
 size_t Read (const char *src, char **Buffer);
 err_t ParseOneLine(char *buf, size_t *rd, char *order, size_t *ordptr);
 int IsZero(double el);
+void get_arg(cond_t *cons, vtype **cell);
+void pr_bin(void* el, int size);
 
 #define INIT_EL1_EL2_ANS vtype el1 = (vtype) DefaultTypeValue;\
     vtype el2 = (vtype) DefaultTypeValue;\
@@ -37,127 +40,64 @@ int IsZero(double el);
 #define GET_ELEM vtype elem = DefaultTypeValue;\
     StackPop (maincons->Buffer, &elem) verifiedby(maincons->Buffer);
 
-#define GET_VAL vtype val = 0;\
-    memcpy(&val, maincons->Ips + maincons->ip, vsize);\
-    maincons->ip += vsize;
+#define GET_VAL int val = 0;\
+    memcpy(&val, maincons->Ips + maincons->ip, sizeof(int));\
+    maincons->ip += sizeof(int);
 
 void Run(const char* src){
     Stack stack = {};
-    StackCtor(&stack, DefaultSize, sizeof(vtype), 'p', print_int);
+    StackCtor(&stack, DefaultSize, sizeof(vtype), 'p', print_d);
+
+    Stack calls = {};
+    StackCtor(&calls, DefaultSize, sizeof(int), 'e', print_int);
 
     cond_t RunConditions {
             .Buffer = &stack,
-            .Regs = RegArray,
+            .Calls = &calls,
+            .Regs = (vtype*) calloc (nreg, sizeof(vtype)),
             .Ips = NULL,
             .ip = 0,
             .decodefunc = castfromstr,
             .tocontinue = true,
+            .cmd = {},
             .ipm = 0,
         };
 
     size_t nip = 0;
-
 
     Parser(src, &RunConditions.Ips, &nip);
 
     RunConditions.ipm = nip;
     while (RunConditions.tocontinue){
 
-        cmd_t cmd = (cmd_t) RunConditions.Ips[RunConditions.ip];
+
+        memcpy(&RunConditions.cmd, &RunConditions.Ips[RunConditions.ip], 1);
+        printf("ip - %d, cmd - %d\n", RunConditions.ip, RunConditions.cmd.cmd);
         RunConditions.ip += cmdsize;
 
         for (int i = 0; i < ncmds; i++){
-            if (cmd == GetFunc[i].command){
+            if (RunConditions.cmd.cmd == GetFunc[i].command){
                 GetFunc[i].cmdfunc(&RunConditions);
             }
         }
         DUMP(&stack);
+        // DUMP(&calls);
     }
 }
+
+
 
 void Parser (const char *src, char **Ips, size_t *ordn){
 
     char *Buffer = NULL;
     size_t len = Read(src, &Buffer);
 
-    size_t reader = 1;
-    size_t lloc = 16;
-    char *ips = (char*) calloc (lloc, sizeof(char));
-    size_t nip = 0;
-
-    while (reader < len) {
-
-        if (lloc < nip + cmdsize + vsize) {
-            ips = (char*) realloc (ips, lloc *= scale);
-
-            assert(ips != NULL);
-        }
-
-        ParseOneLine(Buffer, &reader, ips, &nip);
-        reader++;
-    }
-
-    // for (int i = 0; i < nip; i++){
-    //     printf("%d\n", ips[i]);
+    // for (size_t i = 0; i < len; i++){
+    //     printf("\n!!!%d ", Buffer[i]);
     // }
 
-    *(ordn) = nip;
-    *(Ips) = ips;
-}
-
-err_t ParseOneLine(char *buf, size_t *rd, char *ips, size_t *iptr){
-
-    size_t ipptr = *(iptr);
-    size_t reader = *rd;
-    char cmd = (buf[reader] - 48);
-    memcpy(ips + ipptr, &cmd, cmdsize);
-
-    ipptr += cmdsize;
-    reader++;
-
-    char *word = (char *) calloc (MaxCmdSize, sizeof(char));
-    size_t wordptr = 0;
-
-    while (buf[reader] != '\n'){
-
-        while (buf[reader] != ' '  &&
-               buf[reader] != '\r' &&
-               buf[reader] != EOF  ){
-
-            word[wordptr++] = buf[reader++];
-        }
-
-        if (wordptr > 0){
-
-            if (cmd == CMD_PUSHR || cmd == CMD_POP){
-
-                if (sizeof(word) != RegLen){
-                    return SAM_PRIDUMAL_REG_TAKOY;
-                }
-
-                memcpy(ips + ipptr, word, RegLen);
-                ipptr += RegLen;
-            }
-
-            vtype val = 0;
-            castfromstr(word, &val);
-            // printf("{%s} [%f] (%lld)\n", word, val, ipptr);
-            memcpy(ips + ipptr, &val, vsize);
-            ipptr += vsize;
-
-            memset(word,'\0', MaxCmdSize);
-            wordptr = 0;
-        }
-
-        while (buf[reader] == ' ' || buf[reader] == '\r') {
-
-            reader++;
-        }
-    }
-
-    *(iptr) = ipptr;
-    *(rd) = reader;
-    return CAT_CONDITION;
+    *(ordn) = len;
+    *(Ips) = Buffer;
 }
 
 size_t Read (const char *src, char **Buffer) {
@@ -172,10 +112,9 @@ size_t Read (const char *src, char **Buffer) {
     stat (src, &st);
     _off_t readlen = st.st_size;
 
-    *Buffer = (char*) calloc (readlen + 2, sizeof (char));
-    *Buffer[0] = '\0';
+    *Buffer = (char*) calloc (readlen + 1, sizeof (char));
 
-    size_t lenbuf = read (fo, *Buffer + 1, readlen);
+    size_t lenbuf = read (fo, *Buffer, readlen);
     return lenbuf;
 }
 
@@ -207,15 +146,16 @@ static err_t GetTwoValues(Stack *src, vtype *elem1, vtype *elem2){
     return CAT_CONDITION;
 }
 
-
-
 //=================================================================================
 //TODO: Checker!!!
+
 static err_t func_push(cond_t *maincons){
 
-    GET_VAL;
-    FUNC_PRINT(val);
-    StackPush(maincons->Buffer, &val) verifiedby(maincons->Buffer);
+    vtype *cell = NULL;
+    get_arg(maincons, &cell);
+    printf("%g\n", *cell);
+
+    StackPush(maincons->Buffer, cell) verifiedby(maincons->Buffer);
     return CAT_CONDITION;
 }
 
@@ -330,6 +270,7 @@ static err_t func_jmp(cond_t *maincons){
     return CAT_CONDITION;
 }
 
+
 static err_t func_ja(cond_t *maincons){
     INIT_EL1_EL2;
     GET_VAL;
@@ -385,45 +326,72 @@ static err_t func_jne(cond_t *maincons){
     return CAT_CONDITION;
 }
 
-#pragma GCC diagnostic ignored "-Wunused-parameter"
 
 static err_t func_call(cond_t *maincons){
-
+    GET_VAL;
+    StackPush(maincons->Calls, &maincons->ip) verifiedby(maincons->Calls);
+    maincons->ip = (int) val;
     return CAT_CONDITION;
 }
 
 static err_t func_ret(cond_t *maincons){
-
-    return CAT_CONDITION;
-}
-
-static err_t func_pushr(cond_t *maincons){
-
-    char name[RegLen] = {};
-    memcpy(name, maincons->Ips + maincons->ip, RegLen);
-
-    for (int i = 0; i < nreg; i++){
-        if (!strcmp(maincons->Regs[i].name, name)){
-            StackPush(maincons->Buffer, &maincons->Regs[i].value) verifiedby(maincons->Buffer);
-        }
-    }
-
+    int ip = maincons->ip;
+    StackPop(maincons->Calls, &ip) verifiedby(maincons->Calls);
+    maincons->ip = ip;
     return CAT_CONDITION;
 }
 
 static err_t func_pop(cond_t *maincons){
 
-    char name[RegLen] = {};
-    memcpy(name, maincons->Ips + maincons->ip, RegLen);
+    vtype *cell = NULL;
+    get_arg(maincons, &cell);
 
-    for (int i = 0; i < nreg; i++){
-        if (!strcmp(maincons->Regs[i].name, name)){
-            vtype val = 0;
-            StackPop(maincons->Buffer, &val) verifiedby(maincons->Buffer);
-            maincons->Regs[i].value = val;
-        }
-    }
+    StackPop(maincons->Buffer, cell) verifiedby(maincons->Buffer);
     return CAT_CONDITION;
 }
 
-#pragma GCC diagnostic error "-Wunused-parameter"
+void get_arg(cond_t *cons, vtype **cell){
+
+    static vtype value = 0;
+    value = 0;
+    vtype cnst = 0;
+    int jmp = 0;
+    int reg = 0;
+    com_t cmd = cons->cmd;
+    // pr_bin(&cmd,1);
+
+    if (cmd.ico) {
+        if (CMD_JMP <= cmd.cmd && cmd.cmd <= CMD_JNE){
+            memcpy(&jmp, cons->Ips + cons->ip, sizeof(int));
+            cons->ip += sizeof(int);
+            value += cnst;
+        }
+        else{
+            memcpy(&cnst, cons->Ips + cons->ip, sizeof(vtype));
+            cons->ip += sizeof(vtype);
+            value += cnst;
+        }
+    }
+    // printf("\nHERE%d", cons->ip);
+    if (cmd.reg) {
+        memcpy(&reg, cons->Ips + cons->ip, sizeof(char));
+        cons->ip += sizeof(char);
+        // printf("%d", reg);
+        value += cons->Regs[reg - 1];
+
+    }
+    // printf("EEEE%g\n", value);
+    if (cmd.ico)  *(cell) = &value;
+    else          *(cell) = cons->Regs + reg - 1;
+}
+
+void pr_bin(void* el, int size){
+    for (int i = 0; i < size; i++){
+        int x = 7;
+        uint8_t y = *((char*) el + i);
+        while (x >= 0){
+            printf("%d", (y >> x) & 1);
+            x--;
+        }
+    }
+}

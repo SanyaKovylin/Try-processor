@@ -1,6 +1,6 @@
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
-* [0]
+* [5]
   [NONE] 
   [NONE] 
   [NONE] 
@@ -10,10 +10,10 @@ Error type: SimpleDump
   [NONE] 
 
 --------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
-* [0]
-* [0]
+* [5]
+* [3]
   [NONE] 
   [NONE] 
   [NONE] 
@@ -22,93 +22,9 @@ Error type: SimpleDump
   [NONE] 
 
 --------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
-* [0]
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
+* [15]
   [NONE] 
   [NONE] 
   [NONE] 
@@ -118,9 +34,21 @@ Error type: SimpleDump
   [NONE] 
 
 --------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
-* [0]
+* [15]
+* [6]
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+
+--------------------------------------------------------------------------------
+Dump from Source/commands.cpp:83
+Error type: SimpleDump
+* [15]
   [NONE] 
   [NONE] 
   [NONE] 
@@ -130,9 +58,33 @@ Error type: SimpleDump
   [NONE] 
 
 --------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
-* [0]
+* [15]
+* [6]
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+
+--------------------------------------------------------------------------------
+Dump from Source/commands.cpp:83
+Error type: SimpleDump
+* [15]
+* [6]
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+
+--------------------------------------------------------------------------------
+Dump from Source/commands.cpp:83
+Error type: SimpleDump
+* [21]
   [NONE] 
   [NONE] 
   [NONE] 
@@ -142,9 +94,9 @@ Error type: SimpleDump
   [NONE] 
 
 --------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
-* [0]
+* [21]
   [NONE] 
   [NONE] 
   [NONE] 
@@ -154,9 +106,9 @@ Error type: SimpleDump
   [NONE] 
 
 --------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
-* [0]
+* [21]
   [NONE] 
   [NONE] 
   [NONE] 
@@ -166,9 +118,21 @@ Error type: SimpleDump
   [NONE] 
 
 --------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
-* [0]
+* [21]
+* [7]
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+
+--------------------------------------------------------------------------------
+Dump from Source/commands.cpp:83
+Error type: SimpleDump
+* [3]
   [NONE] 
   [NONE] 
   [NONE] 
@@ -178,9 +142,21 @@ Error type: SimpleDump
   [NONE] 
 
 --------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
-* [0]
+* [3]
+* [1]
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+  [NONE] 
+
+--------------------------------------------------------------------------------
+Dump from Source/commands.cpp:83
+Error type: SimpleDump
+* [2]
   [NONE] 
   [NONE] 
   [NONE] 
@@ -190,115 +166,7 @@ Error type: SimpleDump
   [NONE] 
 
 --------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
   [NONE] 
   [NONE] 
@@ -310,235 +178,7 @@ Error type: SimpleDump
   [NONE] 
 
 --------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-* [0]
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
-Error type: SimpleDump
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-  [NONE] 
-
---------------------------------------------------------------------------------
-Dump from Source/commands.cpp:74
+Dump from Source/commands.cpp:83
 Error type: SimpleDump
   [NONE] 
   [NONE] 
