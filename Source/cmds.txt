@@ -13,6 +13,7 @@ div
 in
 sub
 out
+draw
 hlt
 func:
 add

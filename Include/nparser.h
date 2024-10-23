@@ -35,6 +35,7 @@ const struct CmdName FindFunc[] {
     COMD(CMD_CALL),
     COMD(CMD_RET),
     COMD(CMD_POP),
+    COMD(CMD_DRAW),
 };
 
 

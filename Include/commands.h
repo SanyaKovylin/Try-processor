@@ -8,16 +8,14 @@ vtype DefaultTypeValue = 0;
 const size_t RegLen = sizeof("ax");
 const int nreg = 4;
 
-struct Cell {
-    char el;
-    char r;
-    char g;
-    char b;
-};
+const int withcolor = 0;
+const int LenRam = 200*(withcolor + 1);
+const int RamRow = 20  *(withcolor + 1);
 
 typedef struct Conditions {
     Stack *Buffer;
     Stack *Calls;
+    vtype *RAM;
     vtype *Regs;
     char *Ips;
     size_t ip;
@@ -54,6 +52,8 @@ static err_t func_jne (cond_t *maincons);
 static err_t func_call(cond_t *maincons);
 static err_t func_ret (cond_t *maincons);
 static err_t func_pop (cond_t *maincons);
+static err_t func_draw(cond_t *maincons);
+static err_t func_redp(cond_t *maincons);
 
 struct CmdNum GetFunc[] { // awaitsReg // RequiuresReg
     CMD_PUSH , func_push,
@@ -78,6 +78,8 @@ struct CmdNum GetFunc[] { // awaitsReg // RequiuresReg
     CMD_CALL , func_call,
     CMD_RET  , func_ret,
     CMD_POP  , func_pop,
+    CMD_DRAW , func_draw,
+    CMD_REDP , func_redp,
 };
 
 void print_int(FILE *fw, void* elem);

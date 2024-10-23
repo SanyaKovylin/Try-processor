@@ -1,0 +1,74 @@
+push 200
+pop ax
+push 0
+pop bx
+cycle:
+
+call comp
+pop [bx]
+push bx
+push 1
+add
+pop bx
+push bx
+push ax
+ja cycle
+draw
+hlt
+
+comp:
+push 0
+pop cx
+
+cyc:
+push cx
+push 1
+add
+pop cx
+push cx
+push 20
+mul
+push bx
+ja cyc
+
+push bx
+push cx
+push 1
+sub
+push 20
+mul
+sub
+pop dx
+call circ
+ret
+
+
+circ:
+push dx
+push 2
+div
+push 5
+sub
+push dx
+push 2
+div
+push 5
+sub
+mul
+
+push cx
+push 5
+sub
+push cx
+push 5
+sub
+mul
+
+add
+push 25
+ja one
+push 55
+ret
+one:
+push 33
+ret

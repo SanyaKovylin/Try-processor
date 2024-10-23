@@ -36,6 +36,7 @@ size_t BaseRead (const char *src, char **Buffer) {
 }
 
 err_t NParser (char **buffer, size_t *len){
+    printf("Parsing...\n");
     assert (buffer  != NULL);
     assert (*(buffer)  != NULL);
 
@@ -162,36 +163,37 @@ void write_cmd(buf_t *Buf, com_t *cmd, val_t *vals){
     memcpy(&writeval, cmd, cmdsize);
     Buf->wrt += cmdsize;
 
-    printf("  %d   ", Buf->wrt);
-    pr_bin(cmd, 1);
-    putc(' ', stdout);
+    // printf("  %d   ", Buf->wrt);
+    // pr_bin(cmd, 1);
+    // putc(' ', stdout);
     // printf("%d\n", vals->ip);
 
     // printf(" \nbuf = %s\n", Buf->buffer);
     // printf("\n\nv = %d, 1 = %g, 2 = %d, 3 = %d", cmd->cmd, vals->val, vals->reg, vals->ip);
 
-    if (!IsZero(vals->val)) {
+    if (!IsZero(vals->val) || (cmd->cmd == CMD_PUSH && cmd->ico) || (cmd->cmd == CMD_POP && cmd->ico)) {
         memcpy(&writeval, &vals->val, vsize); // value goes always first
-        pr_bin(&vals->val, vsize);
-        putc(' ', stdout);
+        // pr_bin(&vals->val, vsize);
+        // printf("    %g", vals->val);
+        // putc(' ', stdout);
         Buf->wrt += vsize;
     }
 
     if (vals->reg) {
         memcpy(&writeval, &vals->reg, regsize);
-        pr_bin(&vals->reg, regsize);
-        putc(' ', stdout);
+        // pr_bin(&vals->reg, regsize);
+        // putc(' ', stdout);
         Buf->wrt += regsize;
     }
 
-    if (vals->ip || (13<=cmd->cmd && cmd->cmd<= 20)) {
+    if (vals->ip || (CMD_JMP<=cmd->cmd && cmd->cmd<= CMD_CALL)) {
         memcpy(&writeval, &vals->ip, sizeof(int));
         Buf->wrt += sizeof(int);
         // pr_bin(&vals->ip, sizeof(int));
         // putc(' ', stdout);
-        printf("IP _ %d", vals->ip);
+        // printf("IP _ %d", vals->ip);
     }
-    putc('\n', stdout);
+    // putc('\n', stdout);
 }
 
 void get_word(char *word, size_t *wrdptr, buf_t *Buf){

@@ -34,6 +34,8 @@ typedef enum Commands {
     CMD_CALL = 20,
     CMD_RET  = 21,
     CMD_POP  = 22,
+    CMD_DRAW = 23,
+    CMD_REDP = 24,
     CMD_COUNT,
 } cmd_t;
 

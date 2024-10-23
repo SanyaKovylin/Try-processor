@@ -1,0 +1,27 @@
+in
+pop ax
+push ax
+call fact
+out
+hlt
+
+fact:
+pop bx
+push bx
+push 1
+je toret
+
+push bx
+push bx
+push 1
+sub
+
+call fact
+
+mul
+ret
+
+toret:
+push 1
+ret
+

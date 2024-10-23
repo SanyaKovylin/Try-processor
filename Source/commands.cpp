@@ -7,12 +7,13 @@
 #include <ctype.h>
 #include <stdint.h>
 #include <sys/stat.h>
+#include <windows.h>
 
 #include "commands.h"
 #include "runheader.h"
 
 template <typename T>
-inline T val (T value) { return StackCheck(value);}
+inline T val (T value) {return StackCheck(value);}
 
 #define val(value) ( value )
 #define verifiedby(what) || val(what)
@@ -44,6 +45,8 @@ void pr_bin(void* el, int size);
     memcpy(&val, maincons->Ips + maincons->ip, sizeof(int));\
     maincons->ip += sizeof(int);
 
+FILE* fllog = fopen("Regs.log", "w");
+
 void Run(const char* src){
     Stack stack = {};
     StackCtor(&stack, DefaultSize, sizeof(vtype), 'p', print_d);
@@ -54,7 +57,8 @@ void Run(const char* src){
     cond_t RunConditions {
             .Buffer = &stack,
             .Calls = &calls,
-            .Regs = (vtype*) calloc (nreg, sizeof(vtype)),
+            .RAM =  (vtype*) calloc (LenRam, sizeof(vtype)),
+            .Regs = (vtype*) calloc (nreg  , sizeof(vtype)),
             .Ips = NULL,
             .ip = 0,
             .decodefunc = castfromstr,
@@ -70,9 +74,9 @@ void Run(const char* src){
     RunConditions.ipm = nip;
     while (RunConditions.tocontinue){
 
-
         memcpy(&RunConditions.cmd, &RunConditions.Ips[RunConditions.ip], 1);
-        printf("ip - %d, cmd - %d\n", RunConditions.ip, RunConditions.cmd.cmd);
+        // pr_bin(&RunConditions.cmd,1);
+        // printf("ip - %d, cmd - %d\n", RunConditions.ip, RunConditions.cmd.cmd);
         RunConditions.ip += cmdsize;
 
         for (int i = 0; i < ncmds; i++){
@@ -80,7 +84,14 @@ void Run(const char* src){
                 GetFunc[i].cmdfunc(&RunConditions);
             }
         }
-        DUMP(&stack);
+
+        // printf("\n%d\n%d\n", RunConditions.cmd.cmd, RunConditions.ip);
+        // if (RunConditions.cmd.cmd == CMD_DRAW){
+        //     printf("draw");
+        // }
+        // DUMP(&stack);
+        // fprintf(fllog ,"ax - %g, bx - %g, cx-%g, dx-%g\n",RunConditions.Regs[0],RunConditions.Regs[1],
+                                                        //   RunConditions.Regs[2],RunConditions.Regs[3]);
         // DUMP(&calls);
     }
 }
@@ -94,7 +105,7 @@ void Parser (const char *src, char **Ips, size_t *ordn){
 
     // for (size_t i = 0; i < len; i++){
     //     printf("\n!!!%d ", Buffer[i]);
-    // }
+    // }o[
 
     *(ordn) = len;
     *(Ips) = Buffer;
@@ -153,9 +164,9 @@ static err_t func_push(cond_t *maincons){
 
     vtype *cell = NULL;
     get_arg(maincons, &cell);
-    printf("%g\n", *cell);
 
     StackPush(maincons->Buffer, cell) verifiedby(maincons->Buffer);
+    // StackDump(maincons->Buffer, "DefaultDump", 0, "DefaultDump");
     return CAT_CONDITION;
 }
 
@@ -164,7 +175,7 @@ static err_t func_out(cond_t *maincons){
     vtype topelem = (vtype) DefaultTypeValue;
     StackPop(maincons->Buffer, &topelem) verifiedby(maincons->Buffer);
 
-    printf("YOUR RES :: %g", topelem);
+    printf("YOUR RES :: %g\n", topelem);
 
     return CAT_CONDITION;
 }
@@ -183,6 +194,8 @@ static err_t func_in(cond_t *maincons){
 static err_t func_dump(cond_t *maincons){
 
     StackDump(maincons->Buffer, "DefaultDump", 0, "DefaultDump");
+    printf("ax - %g, bx - %g, cx-%g, dx-%g\n",maincons->Regs[0],maincons->Regs[1],
+                                                      maincons->Regs[2],maincons->Regs[3]);
     return CAT_CONDITION;
 }
 
@@ -223,7 +236,7 @@ static err_t func_div(cond_t *maincons){
 
     INIT_EL1_EL2_ANS;
 
-    if (IsZero(el2)){
+    if (IsZero(el1)){
         printf("division by zero");
         return NE_PODELISH_NA_NICHTO;
     }
@@ -269,7 +282,6 @@ static err_t func_jmp(cond_t *maincons){
     maincons->ip = (int) (val);
     return CAT_CONDITION;
 }
-
 
 static err_t func_ja(cond_t *maincons){
     INIT_EL1_EL2;
@@ -345,8 +357,41 @@ static err_t func_pop(cond_t *maincons){
 
     vtype *cell = NULL;
     get_arg(maincons, &cell);
+    vtype d = 0;
+    StackPop(maincons->Buffer, &d) verifiedby(maincons->Buffer);
+    *cell = d;
+    // printf("EA%p %p -- %d\n", cell, maincons->RAM, maincons->RAM - cell);
 
-    StackPop(maincons->Buffer, cell) verifiedby(maincons->Buffer);
+    return CAT_CONDITION;
+}
+
+static err_t func_draw(cond_t *maincons){
+
+    for (int i = 0; i*RamRow < LenRam; i++){
+        for (int j = 0; j < RamRow; j+=(withcolor+1)){
+            // if (maincons->RAM[RamRow*i + j])
+            //     putc('.', stdout);
+            // else
+            //     putc('*', stdout);
+            // printf("%g", maincons->RAM[RamRow*i + j]);
+            if (withcolor){
+
+            }
+            else{
+                putc(maincons->RAM[RamRow*i + j], stdout);
+            }
+        }
+        putc('\n', stdout);
+    }
+    putc('\n', stdout);
+    putc('\n', stdout);
+    return CAT_CONDITION;
+}
+
+static err_t func_redp(cond_t *maincons){
+
+    printf("ax - %g, bx - %g, cx-%g, dx-%g\n",maincons->Regs[0],maincons->Regs[1],
+                                                      maincons->Regs[2],maincons->Regs[3]);
     return CAT_CONDITION;
 }
 
@@ -359,16 +404,18 @@ void get_arg(cond_t *cons, vtype **cell){
     int reg = 0;
     com_t cmd = cons->cmd;
     // pr_bin(&cmd,1);
-
+    // putc('\n', stdout);
     if (cmd.ico) {
         if (CMD_JMP <= cmd.cmd && cmd.cmd <= CMD_JNE){
             memcpy(&jmp, cons->Ips + cons->ip, sizeof(int));
             cons->ip += sizeof(int);
+            // printf("here1");
             value += cnst;
         }
         else{
             memcpy(&cnst, cons->Ips + cons->ip, sizeof(vtype));
             cons->ip += sizeof(vtype);
+            // printf("here");
             value += cnst;
         }
     }
@@ -378,11 +425,15 @@ void get_arg(cond_t *cons, vtype **cell){
         cons->ip += sizeof(char);
         // printf("%d", reg);
         value += cons->Regs[reg - 1];
-
     }
+
     // printf("EEEE%g\n", value);
-    if (cmd.ico)  *(cell) = &value;
-    else          *(cell) = cons->Regs + reg - 1;
+
+    if (cmd.mem) {*(cell) = &cons->RAM[(int) value];
+    // printf("%d\n", (int) value);
+    }
+    else if      (cmd.ico) *(cell) = &value;
+    else              *(cell) = cons->Regs + reg - 1;
 }
 
 void pr_bin(void* el, int size){
