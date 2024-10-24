@@ -3,35 +3,29 @@
 #include "assrunheader.h"
 
 void print_int(FILE *fw, void* elem);
-char *to_dst(char *word, size_t len);
-
-const char* src = "Source/Fact.txt";
-const char *dst = "Source/SPU.asm";
-
-int fromstrtoint(char *ctr, int *val);
 int fromstrtod(char *str, vtype *val);
 
-int main(const int argc, const char *argv[]){
+const char *SourceFile     = "Source/Square.txt";
+const char *DetinationFile = "Source/Test.asm";
+
+int main(void){
 
     size_t lenbuf = 0;
     char* buffer = NULL;
-    if (argc > 1)
-        lenbuf = BaseRead (argv[1], &buffer);
-    else
-        lenbuf = BaseRead (src, &buffer);
 
-    SetCastFunc(fromstrtod);
+    size_t lenout = 0;
+    char* outbuf = NULL;
 
-    RIZE(NParser(&buffer, &lenbuf));
-    RIZE(NParser(&buffer, &lenbuf));
+    lenbuf = Read(SourceFile, &buffer);
 
-    FILE* fdst = fopen(dst, "wb");
-    fwrite(buffer, sizeof(char), lenbuf, fdst);
+    AsmSetCastFunc(fromstrtod);
+
+    RIZE(Assembler(&buffer, &lenbuf, &outbuf, &lenout));
+
+    FILE* fdst = fopen(DetinationFile, "wb");
+    fwrite(outbuf, sizeof(char), lenout, fdst);
+
     return 0;
-}
-
-int fromstrtoint(char *str, int *val){
-    return sscanf(str, "%d", val);
 }
 
 int fromstrtod(char *str, double *val){

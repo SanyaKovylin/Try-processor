@@ -2,19 +2,13 @@ push 5
 push 3
 mul
 push 6
-pop ax
-push ax
-call func
 jmp next
 push 3
 next:
+add
 push 7
 div
 in
 sub
 out
-draw
 hlt
-func:
-add
-ret

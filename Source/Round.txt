@@ -16,6 +16,12 @@ ja cycle
 draw
 hlt
 
+;--------------------------
+; Computes the discriminant
+; Entry: AX, BX, CX = a, b, c of sq eq
+; Exit:  DX = discr
+; Destr: DX
+;--------------------------
 comp:
 push 0
 pop cx
@@ -41,7 +47,6 @@ sub
 pop dx
 call circ
 ret
-
 
 circ:
 push dx

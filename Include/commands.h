@@ -9,8 +9,10 @@ const size_t RegLen = sizeof("ax");
 const int nreg = 4;
 
 const int withcolor = 0;
-const int LenRam = 200*(withcolor + 1);
-const int RamRow = 20  *(withcolor + 1);
+const int LenRam = 72*160*(withcolor + 1);
+// const int LenRam = 200*(withcolor + 1);
+const int RamRow = 160*(withcolor + 1);
+// const int RamRow = 20*(withcolor + 1);
 
 typedef struct Conditions {
     Stack *Buffer;

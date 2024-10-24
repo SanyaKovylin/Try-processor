@@ -7,7 +7,7 @@
 void print_int(FILE *fw, void* elem);
 int fromstrtod(char *str, vtype *val);
 
-const char* Src = "Source/SPU.asm";
+const char* Src = "Source/Test.asm";
 const char* LogName = "SPU.log";
 
 int main(void){

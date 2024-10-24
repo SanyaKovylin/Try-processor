@@ -6,41 +6,38 @@
 struct CmdName {
     cmd_t command;
     const char *cmdname;
+    const int gets_vtype;
 };
 
 const char *Skip4el(const char* CmdName);
 
-#define COMD(name) {name, Skip4el(#name)}
+#define COMD(name) name, Skip4el(#name)
 
 const struct CmdName FindFunc[] {
-    COMD(CMD_PUSH),
-    COMD(CMD_OUT),
-    COMD(CMD_IN),
-    COMD(CMD_DUMP),
-    COMD(CMD_HLT),
-    COMD(CMD_ADD),
-    COMD(CMD_SUB),
-    COMD(CMD_MUL),
-    COMD(CMD_DIV),
-    COMD(CMD_SQRT),
-    COMD(CMD_SIN),
-    COMD(CMD_COS),
-    COMD(CMD_JMP),
-    COMD(CMD_JA),
-    COMD(CMD_JAE),
-    COMD(CMD_JB),
-    COMD(CMD_JBE),
-    COMD(CMD_JE),
-    COMD(CMD_JNE),
-    COMD(CMD_CALL),
-    COMD(CMD_RET),
-    COMD(CMD_POP),
-    COMD(CMD_DRAW),
+    COMD(CMD_PUSH),1,
+    COMD(CMD_OUT), 1,
+    COMD(CMD_IN),  0,
+    COMD(CMD_DUMP),0,
+    COMD(CMD_HLT), 0,
+    COMD(CMD_ADD), 0,
+    COMD(CMD_SUB), 0,
+    COMD(CMD_MUL), 0,
+    COMD(CMD_DIV), 0,
+    COMD(CMD_SQRT),0,
+    COMD(CMD_SIN), 0,
+    COMD(CMD_COS), 0,
+    COMD(CMD_JMP), 0,
+    COMD(CMD_JA),  0,
+    COMD(CMD_JAE), 0,
+    COMD(CMD_JB),  0,
+    COMD(CMD_JBE), 0,
+    COMD(CMD_JE),  0,
+    COMD(CMD_JNE), 0,
+    COMD(CMD_CALL),0,
+    COMD(CMD_RET), 0,
+    COMD(CMD_POP), 0,
+    COMD(CMD_DRAW),0,
 };
-
-
-
-int (*castfromstr) (char *str, vtype* val) = NULL;
 
 typedef struct Mark {
     char name[10];
@@ -48,21 +45,12 @@ typedef struct Mark {
 } mark_t;
 
 typedef struct Mk {
-    mark_t *marks;
+    mark_t *mark_array;
     size_t size;
     size_t ptr;
 } mk_t;
 
 const int nmarks = 8;
-
-// 000 - no args
-// 001 - only vt
-// 010 - only rg
-// 011 - rg + vt
-// 100 - rg + rg
-// 101 - only ip
-// 110 - ip + val
-// 111 - rg or val
 
 typedef struct BufferConditions {
     char *buffer;
@@ -99,17 +87,34 @@ const rgtr_t RegArray[]  = {
 #endif
 
 typedef struct Values {
+    bool is_int;
     vtype val;
     regn  reg;
-    int    ip;
+    size_t ip;
 } val_t;
 
+struct Conditions {
+    buf_t Buffer;
+    mk_t Marks;
+    com_t CurrentCommand;
+    val_t CommandValues;
+
+};
+
+int (*castfromstr) (char *str, vtype *val) = NULL;
+
 err_t FuncFinder(char *word, com_t *cmd);
-void ParseLine(buf_t *Buf, com_t *cmd, val_t *vals, mk_t *Marks);
+void ParseLine(Conditions *Conditions);
 void get_word(char *word, size_t *wrdptr, buf_t *Buf);
 void check_for_mem(char *word, size_t *wrdptr, com_t *cmd);
-err_t get_vals(char* word, buf_t *Buf, com_t *cmd, val_t *vals, mk_t *marks);
-err_t get_reg_num(char *name, regn *num);
-void write_cmd(buf_t *Buf, com_t *cmd, val_t *vals);
+err_t get_vals(char* word, size_t wordlen, Conditions *Conditions);
+int get_reg_num(char *name, regn *num);
+void write_cmd(Conditions *Conditions);
 
-
+void parse_word(char *word, Conditions *Conditions);
+void parse_constant(char *word, Conditions *Conditions);
+int needs_ip(com_t cmd);
+bool check_for_plus(char *word, size_t len);
+void parse_plus_str(char *word, size_t len, Conditions *Conditions);
+void split_by_plus(char *word, size_t len, char **outword);
+int fromstrtoint(char *ctr, int *val);

@@ -1,3 +1,4 @@
+// #include <TXLib.h>
 #include <string.h>
 #include <math.h>
 #include <assert.h>
@@ -8,6 +9,7 @@
 #include <stdint.h>
 #include <sys/stat.h>
 #include <windows.h>
+#include <conio.h>
 
 #include "commands.h"
 #include "runheader.h"
@@ -22,7 +24,6 @@ inline T val (T value) {return StackCheck(value);}
 int to_int(char *val, int *elem);
 int to_d(char *val, double *elem);
 size_t Read (const char *src, char **Buffer);
-err_t ParseOneLine(char *buf, size_t *rd, char *order, size_t *ordptr);
 int IsZero(double el);
 void get_arg(cond_t *cons, vtype **cell);
 void pr_bin(void* el, int size);
@@ -67,16 +68,14 @@ void Run(const char* src){
             .ipm = 0,
         };
 
-    size_t nip = 0;
+    size_t nip = Read(src, &RunConditions.Ips);
 
-    Parser(src, &RunConditions.Ips, &nip);
+    // Parser(src, &RunConditions.Ips, &nip);
 
     RunConditions.ipm = nip;
     while (RunConditions.tocontinue){
 
         memcpy(&RunConditions.cmd, &RunConditions.Ips[RunConditions.ip], 1);
-        // pr_bin(&RunConditions.cmd,1);
-        // printf("ip - %d, cmd - %d\n", RunConditions.ip, RunConditions.cmd.cmd);
         RunConditions.ip += cmdsize;
 
         for (int i = 0; i < ncmds; i++){
@@ -84,28 +83,14 @@ void Run(const char* src){
                 GetFunc[i].cmdfunc(&RunConditions);
             }
         }
-
-        // printf("\n%d\n%d\n", RunConditions.cmd.cmd, RunConditions.ip);
-        // if (RunConditions.cmd.cmd == CMD_DRAW){
-        //     printf("draw");
-        // }
-        // DUMP(&stack);
-        // fprintf(fllog ,"ax - %g, bx - %g, cx-%g, dx-%g\n",RunConditions.Regs[0],RunConditions.Regs[1],
-                                                        //   RunConditions.Regs[2],RunConditions.Regs[3]);
-        // DUMP(&calls);
+        DUMP(&stack);
     }
 }
-
-
 
 void Parser (const char *src, char **Ips, size_t *ordn){
 
     char *Buffer = NULL;
     size_t len = Read(src, &Buffer);
-
-    // for (size_t i = 0; i < len; i++){
-    //     printf("\n!!!%d ", Buffer[i]);
-    // }o[
 
     *(ordn) = len;
     *(Ips) = Buffer;
@@ -166,7 +151,7 @@ static err_t func_push(cond_t *maincons){
     get_arg(maincons, &cell);
 
     StackPush(maincons->Buffer, cell) verifiedby(maincons->Buffer);
-    // StackDump(maincons->Buffer, "DefaultDump", 0, "DefaultDump");
+
     return CAT_CONDITION;
 }
 
@@ -194,8 +179,8 @@ static err_t func_in(cond_t *maincons){
 static err_t func_dump(cond_t *maincons){
 
     StackDump(maincons->Buffer, "DefaultDump", 0, "DefaultDump");
-    printf("ax - %g, bx - %g, cx-%g, dx-%g\n",maincons->Regs[0],maincons->Regs[1],
-                                                      maincons->Regs[2],maincons->Regs[3]);
+    printf("ax - %g, bx - %g, cx-%g, dx-%g\n", maincons->Regs[0], maincons->Regs[1],
+                                               maincons->Regs[2], maincons->Regs[3]);
     return CAT_CONDITION;
 }
 
@@ -347,6 +332,7 @@ static err_t func_call(cond_t *maincons){
 }
 
 static err_t func_ret(cond_t *maincons){
+
     int ip = maincons->ip;
     StackPop(maincons->Calls, &ip) verifiedby(maincons->Calls);
     maincons->ip = ip;
@@ -357,34 +343,34 @@ static err_t func_pop(cond_t *maincons){
 
     vtype *cell = NULL;
     get_arg(maincons, &cell);
-    vtype d = 0;
-    StackPop(maincons->Buffer, &d) verifiedby(maincons->Buffer);
-    *cell = d;
-    // printf("EA%p %p -- %d\n", cell, maincons->RAM, maincons->RAM - cell);
+
+    StackPop(maincons->Buffer, cell) verifiedby(maincons->Buffer);
 
     return CAT_CONDITION;
 }
 
 static err_t func_draw(cond_t *maincons){
 
+    char *out = (char *) calloc (LenRam + LenRam/RamRow, sizeof(char));
+
     for (int i = 0; i*RamRow < LenRam; i++){
         for (int j = 0; j < RamRow; j+=(withcolor+1)){
-            // if (maincons->RAM[RamRow*i + j])
-            //     putc('.', stdout);
-            // else
-            //     putc('*', stdout);
-            // printf("%g", maincons->RAM[RamRow*i + j]);
             if (withcolor){
-
+                //TODO:color
             }
             else{
-                putc(maincons->RAM[RamRow*i + j], stdout);
+                out[(1+RamRow)*i + j] = maincons->RAM[RamRow*i + j];
+
             }
         }
-        putc('\n', stdout);
+        out[(1+RamRow)*i + RamRow] = '\n';
+        // putc('\n', stdout);
     }
+    puts(out);
     putc('\n', stdout);
     putc('\n', stdout);
+    Sleep(32);
+    system("cls");
     return CAT_CONDITION;
 }
 
