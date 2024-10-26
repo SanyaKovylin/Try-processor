@@ -5,8 +5,8 @@
 void print_int(FILE *fw, void* elem);
 int fromstrtod(char *str, vtype *val);
 
-const char *SourceFile     = "Source/Square.txt";
-const char *DetinationFile = "Source/Test.asm";
+const char *SourceFile     = "Source/Progs/Bad Apple.txt";
+const char *DetinationFile = "Source/Asm/Bad Apple.asm";
 
 int main(void){
 

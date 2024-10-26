@@ -55,7 +55,6 @@ static err_t func_call(cond_t *maincons);
 static err_t func_ret (cond_t *maincons);
 static err_t func_pop (cond_t *maincons);
 static err_t func_draw(cond_t *maincons);
-static err_t func_redp(cond_t *maincons);
 
 struct CmdNum GetFunc[] { // awaitsReg // RequiuresReg
     CMD_PUSH , func_push,
@@ -68,20 +67,19 @@ struct CmdNum GetFunc[] { // awaitsReg // RequiuresReg
     CMD_MUL  , func_mul ,
     CMD_DIV  , func_div ,
     CMD_SQRT , func_sqrt,
-    CMD_SIN  , func_sin,
-    CMD_COS  , func_cos,
-    CMD_JMP  , func_jmp,
-    CMD_JA   , func_ja,
+    CMD_SIN  , func_sin ,
+    CMD_COS  , func_cos ,
+    CMD_JMP  , func_jmp ,
+    CMD_JA   , func_ja ,
     CMD_JAE  , func_jae,
-    CMD_JB   , func_jb,
+    CMD_JB   , func_jb ,
     CMD_JBE  , func_jbe,
-    CMD_JE   , func_je,
+    CMD_JE   , func_je ,
     CMD_JNE  , func_jne,
     CMD_CALL , func_call,
-    CMD_RET  , func_ret,
-    CMD_POP  , func_pop,
+    CMD_RET  , func_ret ,
+    CMD_POP  , func_pop ,
     CMD_DRAW , func_draw,
-    CMD_REDP , func_redp,
 };
 
 void print_int(FILE *fw, void* elem);

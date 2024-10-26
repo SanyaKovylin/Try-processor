@@ -17,6 +17,9 @@
 template <typename T>
 inline T val (T value) {return StackCheck(value);}
 
+// template <typename S>
+// inline S paste(S value) {}
+
 #define val(value) ( value )
 #define verifiedby(what) || val(what)
 #define IS_CMD(cmd) (stricmp(command, SkipCmd(#cmd)) == 0)
@@ -83,7 +86,7 @@ void Run(const char* src){
                 GetFunc[i].cmdfunc(&RunConditions);
             }
         }
-        DUMP(&stack);
+        // DUMP(&stack);
     }
 }
 
@@ -131,7 +134,7 @@ void SetCastFunc(int (*castfunc) (char *str, vtype *val)){
 }
 
 const double eps = 10e-6;
-int IsZero(double el){
+int IsZero(vtype el){
     return abs(el) < eps;
 }
 
@@ -157,10 +160,7 @@ static err_t func_push(cond_t *maincons){
 
 static err_t func_out(cond_t *maincons){
 
-    vtype topelem = (vtype) DefaultTypeValue;
-    StackPop(maincons->Buffer, &topelem) verifiedby(maincons->Buffer);
 
-    printf("YOUR RES :: %g\n", topelem);
 
     return CAT_CONDITION;
 }
@@ -172,8 +172,9 @@ static err_t func_in(cond_t *maincons){
 
     vtype elem = (vtype) DefaultTypeValue;
     maincons->decodefunc(cmd, &elem) verifiedby(maincons->Buffer);
+    StackPush(maincons->Buffer, &elem) verifiedby(maincons->Buffer);
 
-    return (err_t) (StackPush(maincons->Buffer, &elem));
+    return CAT_CONDITION;
 }
 
 static err_t func_dump(cond_t *maincons){
@@ -236,7 +237,6 @@ static err_t func_sqrt(cond_t *maincons){
 
     GET_ELEM;
     elem = sqrt(elem);
-
     PUSH_ANS(elem);
 
     return CAT_CONDITION;
@@ -262,7 +262,7 @@ static err_t func_cos(cond_t *maincons){
 static err_t func_jmp(cond_t *maincons){
 
     GET_VAL;
-    FUNC_PRINT(val);
+    // FUNC_PRINT(val);
 
     maincons->ip = (int) (val);
     return CAT_CONDITION;
@@ -355,13 +355,8 @@ static err_t func_draw(cond_t *maincons){
 
     for (int i = 0; i*RamRow < LenRam; i++){
         for (int j = 0; j < RamRow; j+=(withcolor+1)){
-            if (withcolor){
-                //TODO:color
-            }
-            else{
-                out[(1+RamRow)*i + j] = maincons->RAM[RamRow*i + j];
 
-            }
+            out[(1+RamRow)*i + j] = maincons->RAM[RamRow*i + j];
         }
         out[(1+RamRow)*i + RamRow] = '\n';
         // putc('\n', stdout);
@@ -370,14 +365,7 @@ static err_t func_draw(cond_t *maincons){
     putc('\n', stdout);
     putc('\n', stdout);
     Sleep(32);
-    system("cls");
-    return CAT_CONDITION;
-}
-
-static err_t func_redp(cond_t *maincons){
-
-    printf("ax - %g, bx - %g, cx-%g, dx-%g\n",maincons->Regs[0],maincons->Regs[1],
-                                                      maincons->Regs[2],maincons->Regs[3]);
+    // system("cls");
     return CAT_CONDITION;
 }
 
